@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Exercice Drapeau JS</title>
+	</head>
+	<body>
+		<!-- On initialise Canvas dans le HTML mais tout le reste se passera en Javascript ! -->
+		<canvas id="mon_canvas" width="750" height="750"></canvas>
+		<script type="text/javascript">
+			var c = document.getElementById("mon_canvas");
+			var ctx = c.getContext("2d");
+
+			// drapeau français
+
+			ctx.strokeRect(90,30,210,100);
+			ctx.fillStyle = "blue";
+			ctx.fillRect(90,30,70,100);
+			ctx.fillStyle = "white";
+			ctx.fillRect(160,30,70,100);
+			ctx.fillStyle = "red";
+			ctx.fillRect(230,30,70,100);
+			ctx.fillStyle = "black";		
+			ctx.fillRect(90,130, 10, 180);
+
+			// drapeau anglais
+
+			ctx.strokeRect(90, 350, 230, 140);
+			ctx.fillStyle = "#012583";
+			ctx.fillRect(90, 350, 230, 140);
+			
+
+			// ligne blanc oblique haut gauche à bas droite
+			ctx.beginPath();
+			ctx.moveTo(120,350);
+			ctx.lineTo(320,470);
+			ctx.lineTo(320,490);
+			ctx.lineTo(290,490);
+			ctx.lineTo(90,370);
+			ctx.lineTo(90,350);
+			ctx.fillStyle = "white";
+			ctx.fill();
+
+			// ligne blanc oblique haut droite à bas gauche
+			ctx.beginPath();
+			ctx.moveTo(290,350);
+			ctx.lineTo(90,480);
+			ctx.lineTo(90,490);
+			ctx.lineTo(120,490);
+			ctx.lineTo(320,370);
+			ctx.lineTo(320,350);
+			ctx.fillStyle = "white";
+			ctx.fill();
+
+			// ligne rouge oblique haut droite à bas gauche
+			ctx.beginPath();
+			ctx.moveTo(320,350);
+			ctx.lineTo(110,490);
+			ctx.lineTo(90,490);
+			ctx.lineTo(300,350);
+			ctx.fillStyle = "#d3152e";
+			ctx.fill();
+
+
+			// ligne rouge oblique bas droite
+			ctx.beginPath();
+			ctx.moveTo(320,490);
+			ctx.lineTo(216,426);
+			ctx.lineTo(234,426);
+			ctx.lineTo(320,480);
+			ctx.fillStyle = "#d3152e";
+			ctx.fill();
+			
+			// ligne rouge oblique haut gauche			
+			ctx.beginPath();
+			ctx.moveTo(90,350);
+			ctx.lineTo(180,405);
+			ctx.lineTo(165,405);
+			ctx.lineTo(90,360);
+			ctx.fillStyle = "#d3152e";
+			ctx.fill();
+			
+
+			ctx.clearRect(90, 399, 230, 42);
+			ctx.clearRect(184,350,42,140);
+
+			ctx.fillStyle = "#d3152e";
+			ctx.fillRect(90, 405, 230, 30);
+			ctx.fillStyle = "#d3152e";
+			ctx.fillRect(190, 350,30, 140);
+
+		</script>
+	</body>
+</html>

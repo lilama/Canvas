@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<style>
+			* {
+				padding: 0;
+				margin: 0;
+			}
+			canvas {
+				background: #eee;
+				display: block;
+				margin: 0 auto;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="mon_canvas" width="900" height="900"></canvas>
+		<div id="canon"></div>
+		<div id="projectile"></div>
+		<div id="cilble"></div>
+		<input type="button" id="buttonDemarrer" name="button" value="Démarrer">
+		<script type="text/javascript">
+	
+			var c = document.getElementById("mon_canvas");
+			if (c.getContext)  {
+				var ctx = c.getContext("2d");
+			};
+			var buttonDemarrer = document.getElementById("buttonDemarrer");
+			buttonDemarrer.addEventListener("mousedown", function () {
+				commencer();
+			});
+
+			var canon = document.getElementById("canon");
+			var projectile = document.getElementById("projectile");
+			var cible = document.getElementById("cible");
+
+			window.addEventListener("keydown", function(e) {
+				if (e.keyCode === 37) {
+					deplacerGaucheCanon();
+				}
+				else if (e.keyCode === 39) {
+					deplacerDroiteCanon();
+				}
+				else if (e.keyCode === 32) {
+
+				if (projectileX == canonX && projectileY == canonY - 150) {
+					intervalle = setInterval(lancerProjectile, 50);
+				}
+				
+				if (projectileX > c.width || projectileX < 0 || projectileY < 0 || projectileY > c.height) {
+					projectileX = canonX;
+					projectileY = canonY - 150;
+					intervalle = setInterval(lancerProjectile, 50);
+				}
+				
+			};
+			
+			});
+
+			var canonX = c.width/2;
+			var canonY = c.height-31;
+			var projectileX = c.width/2;
+			var projectileY = c.height-181;
+
+			var cibleX = c.width/2;
+			var cibleY = 41;
+			var rayonCible = 20;
+			
+			var deplacementCanonX = 20;
+
+			var deplacementProjectileX = 5;
+			var deplacementProjectileY = -5;
+
+			var nbCibleTouchee = 0;
+
+			var intervalle;
+			
+			function commencer() {
+				dessinerCanon();
+				dessinerCible();
+			}
+
+
+			function dessinerCanon(){
+				// Canon
+				ctx.beginPath();
+				ctx.arc(canonX, canonY, 30, 0, Math.PI*1.2, false);
+				ctx.fillStyle = "black";
+				ctx.fill();
+				ctx.lineTo(canonX,canonY -150);
+				ctx.fillStyle = "black";
+				ctx.fill();
+				ctx.moveTo(canonX + 30,canonY);
+				ctx.lineTo(canonX + 30,canonY -150);
+				ctx.fillStyle = "black";
+				ctx.fill();
+				ctx.lineTo(canonX,canonY -150);
+				ctx.fillStyle = "black";
+				ctx.fill();
+			}
+
+			function dessinerProjectile(){	
+				// Projectile
+				ctx.moveTo(projectileX,projectileY);
+				ctx.lineTo(projectileX+30, projectileY);
+				ctx.lineTo(projectileX+30, projectileY- 30);
+				ctx.lineTo(projectileX+15, projectileY- 40);
+				ctx.lineTo(projectileX, projectileY-30);
+				ctx.lineTo(projectileX, projectileY);
+				ctx.fillStyle = "#ff9c2a";
+				ctx.fill();
+
+			}
+
+
+			function dessinerCible() {
+				// Cible
+
+				effacerCible();
+
+				cibleX = Math.random() * (c.width-19);
+				cibleY = Math.random() * 180;
+				
+				if (cibleX < rayonCible) {
+					cibleX = rayonCible;
+				}
+
+				if (cibleY < rayonCible) {
+					cibleY = rayonCible;
+				}
+
+				ctx.moveTo(cibleX+20,cibleY);
+				ctx.arc(cibleX, cibleY, rayonCible, 0, Math.PI * 2, true);
+				ctx.fillStyle = "red";
+				ctx.fill();
+				
+			}
+
+			function deplacerGaucheCanon() {
+
+				effacerCanon(canonX - 35,canonY - 300);		
+
+				if (canonX + deplacementCanonX < 61) {
+					canonX = 31;
+					projectileX = canonX;
+					projectileY = projectileY;
+				} else {
+					canonX -= deplacementCanonX;					
+				}
+							
+				
+				canonY = canonY;
+
+				if (projectileX > c.width && projectileX < 0 && projectileY < 0 && projectileY > c.height) {
+
+				projectileX = canonX;
+				projectileY = projectileY;
+
+				}		
+		
+				dessinerCanon();
+			}
+
+			function deplacerDroiteCanon() {
+
+				effacerCanon(canonX - 35,canonY - 300);
+		
+				if (canonX + deplacementCanonX > c.width-31) {
+					canonX = c.width - 31;
+					projectileX = canonX;
+					projectileY = projectileY;	
+				} else {
+					canonX += deplacementCanonX;	
+				}
+
+				canonY = canonY;
+
+				if (projectileX > c.width && projectileX < 0 && projectileY < 0 && projectileY > c.height) {
+
+				projectileX = canonX;
+				projectileY = projectileY;			
+		
+				}
+
+				dessinerCanon();
+			}
+
+			function lancerProjectile() {
+				
+				effacerProjectile(projectileX-10, projectileY-40);
+
+				if (projectileX > c.width || projectileY < 0) {
+					clearInterval(intervalle);
+				}
+
+				if (projectileX <= cibleX+35 && projectileX >= cibleX-35 && projectileY <= cibleY+35 && projectileY >= cibleY-35) {
+					nbCibleTouchee += 1;
+					alert("Cible touchée: " + " Projectile X: " + projectileX + " Cible X: " + cibleX + "\nProjectile Y: " + projectileY + " Cible Y: " + cibleY);
+					alert("Nombre de Cibles touchées: " + nbCibleTouchee);
+					dessinerCible();
+				}
+
+				if (nbCibleTouchee == 2) {
+					alert("Bravo ! Partie Gagnée !");
+					clearInterval(intervalle);
+				}
+
+				projectileX += deplacementProjectileX;
+				projectileY += deplacementProjectileY;	
+
+				dessinerProjectile();
+
+			}
+			
+
+			
+			function effacerProjectile(x,y){
+				// Canon
+				ctx.beginPath();
+				ctx.moveTo(x,y);
+				ctx.clearRect(x,y, 50, 41);
+				ctx.closePath();
+			}
+				
+
+
+			function effacerCanon(x,y){
+				// Canon
+				ctx.beginPath();
+				ctx.moveTo(x,y);
+				ctx.clearRect(x,y, 840, 840);
+				ctx.closePath();
+			}
+			
+			function effacerCible(){
+				// Cible
+				ctx.beginPath();
+				ctx.moveTo(0,0);
+				ctx.clearRect(0,0, 900, 719);
+				ctx.closePath();
+			}
+
+		</script>
+	</body>
+</html>
