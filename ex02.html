@@ -194,6 +194,12 @@
 					clearInterval(intervalle);
 				}
 
+				projectileX += deplacementProjectileX;
+				projectileY += deplacementProjectileY;	
+
+				dessinerProjectile();
+
+
 				if (projectileX <= cibleX+35 && projectileX >= cibleX-35 && projectileY <= cibleY+35 && projectileY >= cibleY-35) {
 					nbCibleTouchee += 1;
 					alert("Cible touchée: " + " Projectile X: " + projectileX + " Cible X: " + cibleX + "\nProjectile Y: " + projectileY + " Cible Y: " + cibleY);
@@ -201,18 +207,12 @@
 					dessinerCible();
 				}
 
-				if (nbCibleTouchee == 2) {
+				if (nbCibleTouchee == 10) {
 					alert("Bravo ! Partie Gagnée !");
 					clearInterval(intervalle);
-				}
-
-				projectileX += deplacementProjectileX;
-				projectileY += deplacementProjectileY;	
-
-				dessinerProjectile();
-
-			}
-			
+					window.location.reload();
+				}			
+			}			
 
 			
 			function effacerProjectile(x,y){
